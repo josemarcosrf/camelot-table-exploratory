@@ -1,0 +1,67 @@
+[project]
+name = "excalibur"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "josemarcosrf", email = "jose@melior.ai"},
+]
+dependencies = [
+    "pypdf2<3.0.0",
+    "excalibur-py @ git+https://github.com/josemarcosrf/excalibur.git@master#egg=excalibur-py",
+    "werkzeug<3.0.0",
+    "invoke>=2.2.0",
+    "ipython>=8.12.3",
+    "tabulate>=0.9.0",
+]
+requires-python = "==3.8.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[project.optional-dependencies]
+dev = [
+    "isort>=5.13.2",
+    "ruff>=0.4.6",
+]
+[tool.pdm]
+distribution = false
+
+
+[tool.pdm.scripts]
+
+init  = "excalibur initdb"
+start = "excalibur webserver"
+
+[tool.pdm.scripts.reformat]
+shell = """
+    isort .
+    ruff format .
+"""
+help = "Reformat the code using isort and ruff."
+
+
+[tool.ruff]
+line-length = 88
+output-format = "grouped"
+
+[tool.ruff.lint]
+select = [  # see https://docs.astral.sh/ruff/rules/
+    "E4", "E7", "E9",  # basic pycodestyle rules
+    "W",     # pycodestyle warnings
+    "F",     # Pyflakes rules
+    "N",     # PEP8 naming conventions
+    "PLR",   # Pylint refactoring recommendations
+    "PTH",   # recommends to use pathlib instead of os.path
+    "UP",    # pyupgrade suggestions
+#    "BLE",   # locates blind exception capture
+    "B",     # locates possible bugs and design problems
+    "A",     # locates shadowing of builtin names
+    "C4",    # locates possible issues with comprehensions
+    "PIE",   # miscellaneous linting rules
+    "DTZ",   # locates incorrect use of timezone information
+    "TRY",   # locates potential exception handling antipatterns
+    "PERF",  # locates potential performance issues
+    "RUF",   # various Ruff-specific linting rules
+]
+# TODO: fix this to use Annotated instead of function call as default.
+ignore = ["B008", "TRY003"]
